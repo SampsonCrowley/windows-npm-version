@@ -13,18 +13,11 @@ FOR /F "tokens=*" %%F in ('dir /on /b /a:d /p "%NPM_DIR%"') DO (
   SET dir_!n!=%%F
   SET /a n=n+1   
 )
+set "id=1"
+set /p id="enter version ID: (e.g. !dir_1! enter 1): "
 
-set /p id="enter version ID: (e.g. !dir_1! enter 1):"
-
-set /A n=1
-
-FOR /F "tokens=*" %%F in ('dir /on /b /a:d /p "%NPM_DIR%"') DO ( 
-  if "!id!"=="!n!" (
-    echo "%%F set"
-    move "%NPM_DIR%\%%F" %NPM_PATH%>nul
-    goto :end
-  )  
-  SET /a n=n+1 
-)
+for %%i in (!id!) do set target_dir=!dir_%%i!
+echo !target_dir! is now your npm version
+move "%NPM_DIR%\!target_dir!" "%NPM_PATH%" >nul
 
 :end
